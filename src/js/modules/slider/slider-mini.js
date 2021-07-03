@@ -25,23 +25,32 @@ export default class MiniSlider extends Slider {
         }
     }
 
-    bindTriggers() {
-        this.next.addEventListener('click', () => {
-            if (this.slides[1].tagName == 'BUTTON' && this.slides[2].tagName == 'BUTTON') {
-                this.container.appendChild(this.slides[0]);
-                this.container.appendChild(this.slides[1]);
-                this.container.appendChild(this.slides[2]);
-                this.decorizaSlides();
-            } else if (this.slides[1].tagName){
-                this.container.appendChild(this.slides[0]);
-                this.container.appendChild(this.slides[1]);
-                this.decorizaSlides();
-            } else {
-                this.container.appendChild(this.slides[0]);
-                this.decorizaSlides();
-            }
-        });
+    nextSlide() {
+        if (this.slides[1].tagName == 'BUTTON' && this.slides[2].tagName == 'BUTTON') {
+            this.container.appendChild(this.slides[2]);
+            this.container.appendChild(this.slides[1]);
+            this.container.appendChild(this.slides[0]);
+            this.decorizaSlides();
+        } else if (this.slides[1].tagName == 'BUTTON'){
+            this.container.appendChild(this.slides[1]);
+            this.container.appendChild(this.slides[0]);
+            this.decorizaSlides();
+        } else {
+            this.container.appendChild(this.slides[0]);
+            this.decorizaSlides();
+        }
 
+        // for (let i = this.slide[0]; i < this.slides.length; i++) {
+        //     if (this.slides[0].tagName !== 'BUTTON' && this.slides[1].tagName !== 'BUTTON') {
+        //         this.container.appendChild(this.slides[0]);
+        //         this.decorizaSlides();
+        //     }
+        // }
+    
+    }
+
+    bindTriggers() {
+        this.next.addEventListener('click', () => this.nextSlide());
         
         this.prev.addEventListener('click', () => {
 
@@ -56,8 +65,8 @@ export default class MiniSlider extends Slider {
 
             
         });
-    }
 
+    }
     init() {
         this.container.style.cssText = `
             display: flex;
@@ -68,5 +77,8 @@ export default class MiniSlider extends Slider {
 
         this.bindTriggers();
         this.decorizaSlides();
+        if(this.autoPlay){
+            setInterval(() => this.nextSlide(), 5000);
+        }
     }
 }

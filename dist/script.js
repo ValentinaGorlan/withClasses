@@ -2764,6 +2764,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider_slider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/slider/slider */ "./src/js/modules/slider/slider.js");
 /* harmony import */ var _modules_slider_slider_main__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/slider/slider-main */ "./src/js/modules/slider/slider-main.js");
 /* harmony import */ var _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/slider/slider-mini */ "./src/js/modules/slider/slider-mini.js");
+/* harmony import */ var _modules_diference__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/diference */ "./src/js/modules/diference.js");
+
 
 
 
@@ -2787,7 +2789,8 @@ window.addEventListener('DOMContentLoaded', function () {
     prev: '.modules__info-btns .slick-prev',
     next: '.modules__info-btns .slick-next',
     activeClass: 'card-active',
-    animate: true
+    animate: true,
+    autoPlay: true
   });
   modulesSlider.init();
   var feedSlider = new _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_3__["default"]({
@@ -2799,7 +2802,62 @@ window.addEventListener('DOMContentLoaded', function () {
   feedSlider.init();
   var player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_0__["default"]('.showup .play', '.overlay');
   player.init();
+  new _modules_diference__WEBPACK_IMPORTED_MODULE_4__["default"]('.officernew', '.officer__card-item').init();
+  new _modules_diference__WEBPACK_IMPORTED_MODULE_4__["default"]('.officerold', '.officer__card-item').init();
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/diference.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/diference.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Difference; });
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Difference =
+/*#__PURE__*/
+function () {
+  function Difference(Officer, items) {
+    _classCallCheck(this, Difference);
+
+    this.Officer = document.querySelector(Officer);
+    this.items = items;
+  }
+
+  _createClass(Difference, [{
+    key: "hideItems",
+    value: function hideItems() {
+      this.Officer.querySelectorAll(this.items).forEach(function (item, i, arr) {
+        if (i !== arr.length - 1) {
+          item.style.display = 'none';
+        }
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      this.hideItems();
+    }
+  }]);
+
+  return Difference;
+}();
+
+
 
 /***/ }),
 
@@ -3125,30 +3183,35 @@ function (_Slider) {
       }
     }
   }, {
+    key: "nextSlide",
+    value: function nextSlide() {
+      if (this.slides[1].tagName == 'BUTTON' && this.slides[2].tagName == 'BUTTON') {
+        this.container.appendChild(this.slides[2]);
+        this.container.appendChild(this.slides[1]);
+        this.container.appendChild(this.slides[0]);
+        this.decorizaSlides();
+      } else if (this.slides[1].tagName == 'BUTTON') {
+        this.container.appendChild(this.slides[1]);
+        this.container.appendChild(this.slides[0]);
+        this.decorizaSlides();
+      } else {
+        this.container.appendChild(this.slides[0]);
+        this.decorizaSlides();
+      } // for (let i = this.slide[0]; i < this.slides.length; i++) {
+      //     if (this.slides[0].tagName !== 'BUTTON' && this.slides[1].tagName !== 'BUTTON') {
+      //         this.container.appendChild(this.slides[0]);
+      //         this.decorizaSlides();
+      //     }
+      // }
+
+    }
+  }, {
     key: "bindTriggers",
     value: function bindTriggers() {
       var _this2 = this;
 
       this.next.addEventListener('click', function () {
-        if (_this2.slides[1].tagName == 'BUTTON' && _this2.slides[2].tagName == 'BUTTON') {
-          _this2.container.appendChild(_this2.slides[0]);
-
-          _this2.container.appendChild(_this2.slides[1]);
-
-          _this2.container.appendChild(_this2.slides[2]);
-
-          _this2.decorizaSlides();
-        } else if (_this2.slides[1].tagName) {
-          _this2.container.appendChild(_this2.slides[0]);
-
-          _this2.container.appendChild(_this2.slides[1]);
-
-          _this2.decorizaSlides();
-        } else {
-          _this2.container.appendChild(_this2.slides[0]);
-
-          _this2.decorizaSlides();
-        }
+        return _this2.nextSlide();
       });
       this.prev.addEventListener('click', function () {
         for (var i = _this2.slides.length - 1; i > 0; i--) {
@@ -3167,9 +3230,17 @@ function (_Slider) {
   }, {
     key: "init",
     value: function init() {
+      var _this3 = this;
+
       this.container.style.cssText = "\n            display: flex;\n            flex-wrap: wrap;\n            overflow: hidden;\n            align-items: flex-start;\n        ";
       this.bindTriggers();
       this.decorizaSlides();
+
+      if (this.autoPlay) {
+        setInterval(function () {
+          return _this3.nextSlide();
+        }, 5000);
+      }
     }
   }]);
 

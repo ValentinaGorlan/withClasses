@@ -1,7 +1,8 @@
 import VideoPlayer from "./modules/playVideo";
 import Slider from "./modules/slider/slider";
 import MainSlider from "./modules/slider/slider-main";
-import MiniSlider from './modules/slider/slider-mini'
+import MiniSlider from './modules/slider/slider-mini';
+import Difference from './modules/diference';
 
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -13,7 +14,8 @@ window.addEventListener('DOMContentLoaded', () => {
         prev: '.showup__prev',
         next: '.showup__next',
         activeClass: 'card-active',
-        animate: true
+        animate: true,
+        
     });
 
     showUpSlider.init();
@@ -23,7 +25,8 @@ window.addEventListener('DOMContentLoaded', () => {
         prev: '.modules__info-btns .slick-prev',
         next: '.modules__info-btns .slick-next',
         activeClass: 'card-active',
-        animate: true
+        animate: true,
+        autoPlay: true
     });
 
     modulesSlider.init();
@@ -39,4 +42,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const player= new VideoPlayer('.showup .play', '.overlay');
     player.init();
+
+    new Difference('.officernew', '.officer__card-item').init();
+    new Difference('.officerold','.officer__card-item').init();
 });
