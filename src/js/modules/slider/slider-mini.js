@@ -39,6 +39,8 @@ export default class MiniSlider extends Slider {
             this.container.appendChild(this.slides[0]);
             this.decorizaSlides();
         }
+        // this.slides[0].classList.remove('animated', 'fadeInLeft');
+        this.slides[0].classList.add('animated', 'fadeIn');
 
         // for (let i = this.slide[0]; i < this.slides.length; i++) {
         //     if (this.slides[0].tagName !== 'BUTTON' && this.slides[1].tagName !== 'BUTTON') {
@@ -62,23 +64,26 @@ export default class MiniSlider extends Slider {
                     break;
                 }
             }
-
+            // this.slides[0].classList.remove('animated', 'fadeInRight');
+            this.slides[0].classList.add('animated', 'fadeIn');
             
         });
 
     }
     init() {
-        this.container.style.cssText = `
+        try {
+            this.container.style.cssText = `
             display: flex;
             flex-wrap: wrap;
             overflow: hidden;
             align-items: flex-start;
-        `;
+            `;
 
-        this.bindTriggers();
-        this.decorizaSlides();
-        if(this.autoPlay){
-            setInterval(() => this.nextSlide(), 5000);
-        }
+            this.bindTriggers();
+            this.decorizaSlides();
+            if(this.autoPlay){
+                setInterval(() => this.nextSlide(), 5000);
+            } 
+        }catch(e) {}
     }
 }
